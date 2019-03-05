@@ -1,0 +1,2 @@
+# Split video into multiple parts
+ffmpeg -i ~/Desktop/tang6.avi -c copy -map 0 -segment_time 00:20:00 -f segment -reset_timestamps 1 ~/Desktop/tang6%03d.avi
