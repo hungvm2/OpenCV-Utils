@@ -12,6 +12,7 @@ ap.add_argument('-p', type=int, help='number of desired parts', required=True)
 args = vars(ap.parse_args())
 
 num_of_parts_to_slit = args.get('p')
+num_of_parts_to_slit = args.get('p')
 print ("Split the video into {} parts".format(str(num_of_parts_to_slit)))
 
 filename = args.get('video')[:-4]
