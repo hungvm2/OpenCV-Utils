@@ -3,15 +3,17 @@
 
 # import the necessary packages
 from centroidtracker import CentroidTracker
-from imutils.video import VideoStream
+# from imutils.video import VideoStream
 import numpy as np
 import argparse
 import imutils
 import time
 import cv2
-
+from imutils.video import WebcamVideoStream
+from imutils.video import FPS
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
+ap.add_argument("-v", "--video",help="path to video file")
 ap.add_argument("-p", "--prototxt",help="path to Caffe 'deploy' prototxt file", default='deploy.prototxt')
 ap.add_argument("-m", "--model",help="path to Caffe pre-trained model", default='res10_300x300_ssd_iter_140000.caffemodel')
 ap.add_argument("-c", "--confidence", type=float, default=0.7,help="minimum probability to filter weak detections")
@@ -27,15 +29,23 @@ net = cv2.dnn.readNetFromCaffe(args["prototxt"], args["model"])
 
 # initialize the video stream and allow the camera sensor to warmup
 print("[INFO] starting video stream...")
-vs = VideoStream(src=1).start()
-time.sleep(2.0)
-
+# vs = cv2.VideoCapture(0)
+vs = WebcamVideoStream('rtsp://admin:Technology@@169.254.46.181/h264/ch1/main/av_stream').start()
+# vs = cv2.VideoCapture('rtsp://admin:Technology@@169.254.46.181/h265/ch1/main/av_stream')
+# vs.set(3,640) #set frame width
+# vs.set(4,480) #set frame height
+# vs.set(5, 5) #adjusting fps to 5
+# vs = cv2.VideoCapture(args.get('video'))
+# vs = VideoStream(src=1).start()
+# vs = VideoStream(args.get('video')).start()
+fps = FPS().start()
 # loop over the frames from the video stream
 while True:
 	# read the next frame from the video stream and resize it
 	frame = vs.read()
-	frame = imutils.resize(frame, width=400)
-
+	# _,frame = vs.read()
+	frame = imutils.resize(frame, width=640)
+	# frame = cv2.resize(frame, (1024, 576))
 	# if the frame dimensions are None, grab them
 	if W is None or H is None:
 		(H, W) = frame.shape[:2]
@@ -85,7 +95,15 @@ while True:
 	# if the `q` key was pressed, break from the loop
 	if key == ord("q"):
 		break
+	# update the FPS counter
+	fps.update()
+
+# stop the timer and display FPS information
+fps.stop()
+print("[INFO] elasped time: {:.2f}".format(fps.elapsed()))
+print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
 
 # do a bit of cleanup
+# vs.release()
 cv2.destroyAllWindows()
 vs.stop()
