@@ -1,0 +1,10 @@
+# Exit bash-like environment inside a container
+typing ctrl+p and ctrl+q after each other
+# List all container including stoped containers
+docker container ls --all
+# Create and start a container from a image ( equa create + start )
+docker container run <img name>
+# Remove a container 
+docker container rm <container name>
+# Execute a command when a container is running
+docker exec -ti <containerid> <command>

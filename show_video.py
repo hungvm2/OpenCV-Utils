@@ -1,6 +1,7 @@
 import cv2
 
-vidcap = cv2.VideoCapture('rtsp://test:abcd1234@10.84.130.40/h265/ch8/main/av_stream')
+vidcap = cv2.VideoCapture('http://127.0.0.1:8081')
+# vidcap = cv2.VideoCapture('rtsp://test:abcd1234@10.84.130.40/h265/ch8/main/av_stream')
 vidcap.set(3,640) #set frame width
 vidcap.set(4,480) #set frame height
 # vidcap = cv2.VideoCapture(args.get('video'))
